@@ -44,12 +44,23 @@ npx skills add zeroeval/zeroeval-skills --list
 # Install a specific plugin
 /plugin install zeroeval-install@zeroeval-skills
 /plugin install create-judge@zeroeval-skills
+
+# Reload plugins if the new commands do not appear immediately
+/reload-plugins
+```
+
+Claude Code plugin skills are namespaced by plugin name. After installing from the marketplace, invoke them as:
+
+```bash
+/zeroeval-install:zeroeval-install
+/create-judge:create-judge
 ```
 
 ### Option 3: Clone and copy
 
 ```bash
 git clone https://github.com/zeroeval/zeroeval-skills.git
+mkdir -p .agents/skills
 cp -r zeroeval-skills/skills/* .agents/skills/
 ```
 
@@ -57,10 +68,12 @@ Or copy individual skills:
 
 ```bash
 # Cursor
+mkdir -p .cursor/skills
 cp -r zeroeval-skills/skills/zeroeval-install .cursor/skills/zeroeval-install
 cp -r zeroeval-skills/skills/create-judge .cursor/skills/create-judge
 
 # Claude Code
+mkdir -p .claude/skills
 cp -r zeroeval-skills/skills/zeroeval-install .claude/skills/zeroeval-install
 cp -r zeroeval-skills/skills/create-judge .claude/skills/create-judge
 ```
