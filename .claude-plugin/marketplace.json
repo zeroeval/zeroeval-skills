@@ -1,0 +1,22 @@
+{
+  "name": "zeroeval-skills",
+  "owner": {
+    "name": "ZeroEval",
+    "email": "founders@zeroeval.com"
+  },
+  "metadata": {
+    "description": "Skills for installing and using ZeroEval in AI applications"
+  },
+  "plugins": [
+    {
+      "name": "zeroeval-install",
+      "source": "./plugins/zeroeval-install",
+      "description": "Install and integrate ZeroEval SDK for Python and TypeScript"
+    },
+    {
+      "name": "create-judge",
+      "source": "./plugins/create-judge",
+      "description": "Create automated judges for LLM output evaluation"
+    }
+  ]
+}

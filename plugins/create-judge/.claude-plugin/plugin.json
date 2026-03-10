@@ -1,0 +1,5 @@
+{
+  "name": "create-judge",
+  "description": "Create automated judges for LLM output evaluation",
+  "version": "1.0.0"
+}
