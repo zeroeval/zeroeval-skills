@@ -1,0 +1,5 @@
+{
+  "name": "prompt-migration",
+  "description": "Migrate hardcoded prompts to ze.prompt with feedback and optimization",
+  "version": "1.0.0"
+}

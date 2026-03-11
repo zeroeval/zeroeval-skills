@@ -17,6 +17,11 @@
       "name": "create-judge",
       "source": "./plugins/create-judge",
       "description": "Create automated judges for LLM output evaluation"
+    },
+    {
+      "name": "prompt-migration",
+      "source": "./plugins/prompt-migration",
+      "description": "Migrate hardcoded prompts to ze.prompt with feedback and optimization"
     }
   ]
 }

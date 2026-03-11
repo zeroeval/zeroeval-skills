@@ -53,6 +53,8 @@ If the user has hardcoded system prompts, propose migrating to `ze.prompt` for v
 - Start with `from: "explicit"` (safe rollout mode — always returns your local content, but still registers the version via a network call), then graduate to auto mode.
 - **Always place `ze.prompt()` inside the function or request handler where the prompt is used.** It performs network I/O and must not run at module import time or during app startup. See the playbook's "Placement and Resilience" guidance.
 
+For the full migration workflow including feedback wiring, judge linkage, staged rollout, and prompt optimization, use the `prompt-migration` skill.
+
 ### Step 5: Suggest Judges
 
 Load `references/judges-playbook.md` and recommend starter judges based on the user's app pattern:

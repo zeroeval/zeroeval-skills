@@ -8,13 +8,18 @@ Agent skills for integrating ZeroEval into AI applications. Works with Cursor, C
 
 **create-judge** -- Design and create automated judges. Covers binary vs scored evaluation, template writing, criteria design, and the full creation API.
 
+**prompt-migration** -- Migrate hardcoded prompts to `ze.prompt`. Covers the full migration workflow, feedback wiring, judge linkage, staged rollout, and prompt optimization for both Python and TypeScript.
+
 ## Which skill do I need?
 
 | I want to... | Use |
 |-------------|-----|
 | Add ZeroEval to my project for the first time | zeroeval-install |
 | Set up tracing and observability | zeroeval-install |
-| Migrate hardcoded prompts to ze.prompt | zeroeval-install |
+| Migrate hardcoded prompts to ze.prompt | prompt-migration |
+| Wire feedback collection for prompt optimization | prompt-migration |
+| Connect judges to a prompt for automated evaluation | prompt-migration |
+| Understand the staged rollout (explicit / auto / latest) | prompt-migration |
 | Get recommendations for which judges to create | zeroeval-install |
 | Create a new judge with a custom template | create-judge |
 | Design scoring criteria for multi-dimensional evaluation | create-judge |
@@ -44,6 +49,7 @@ npx skills add zeroeval/zeroeval-skills --list
 # Install a specific plugin
 /plugin install zeroeval-install@zeroeval-skills
 /plugin install create-judge@zeroeval-skills
+/plugin install prompt-migration@zeroeval-skills
 
 # Reload plugins if the new commands do not appear immediately
 /reload-plugins
@@ -54,6 +60,7 @@ Claude Code plugin skills are namespaced by plugin name. After installing from t
 ```bash
 /zeroeval-install:zeroeval-install
 /create-judge:create-judge
+/prompt-migration:prompt-migration
 ```
 
 ### Option 3: Clone and copy
@@ -71,11 +78,13 @@ Or copy individual skills:
 mkdir -p .cursor/skills
 cp -r zeroeval-skills/skills/zeroeval-install .cursor/skills/zeroeval-install
 cp -r zeroeval-skills/skills/create-judge .cursor/skills/create-judge
+cp -r zeroeval-skills/skills/prompt-migration .cursor/skills/prompt-migration
 
 # Claude Code
 mkdir -p .claude/skills
 cp -r zeroeval-skills/skills/zeroeval-install .claude/skills/zeroeval-install
 cp -r zeroeval-skills/skills/create-judge .claude/skills/create-judge
+cp -r zeroeval-skills/skills/prompt-migration .claude/skills/prompt-migration
 ```
 
 Note: on Windows without symlink support, use `npx skills` or the manual copy method. The `plugins/` directory contains symlinks that may not resolve on Windows.
@@ -95,15 +104,21 @@ zeroeval-skills/
 │   │       ├── typescript-integration-playbook.md
 │   │       ├── judges-playbook.md
 │   │       └── troubleshooting.md
-│   └── create-judge/
+│   ├── create-judge/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── judge-creation-guide.md
+│   │       ├── evaluation-patterns.md
+│   │       └── defaults-and-api-reference.md
+│   └── prompt-migration/
 │       ├── SKILL.md
 │       └── references/
-│           ├── judge-creation-guide.md
-│           ├── evaluation-patterns.md
-│           └── defaults-and-api-reference.md
+│           ├── python-prompt-migration-playbook.md
+│           └── typescript-prompt-migration-playbook.md
 └── plugins/                            # Claude Code plugin wrappers (symlinked)
     ├── zeroeval-install/
-    └── create-judge/
+    ├── create-judge/
+    └── prompt-migration/
 ```
 
 ## Requirements
