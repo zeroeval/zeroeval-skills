@@ -1,0 +1,5 @@
+{
+  "name": "custom-tracing",
+  "description": "Send traces to ZeroEval via REST API or OpenTelemetry without the SDK",
+  "version": "1.0.0"
+}

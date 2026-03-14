@@ -4,7 +4,9 @@ Agent skills for integrating ZeroEval into AI applications. Works with Cursor, C
 
 ## Skills included
 
-**zeroeval-install** -- Get from zero to production-ready. Walks through SDK install (Python or TypeScript), first trace, `ze.prompt` migration, and starter judge recommendations.
+**zeroeval-install** -- Get from zero to production-ready. Walks through SDK install (Python or TypeScript), first trace, `ze.prompt` migration, and starter judge recommendations. Routes to `custom-tracing` for non-SDK languages.
+
+**custom-tracing** -- Send traces to ZeroEval without the SDK. Covers direct REST API ingestion (`POST /spans`) and OpenTelemetry (OTLP) export for any language.
 
 **create-judge** -- Design and create automated judges. Covers binary vs scored evaluation, template writing, criteria design, and the full creation API.
 
@@ -15,7 +17,9 @@ Agent skills for integrating ZeroEval into AI applications. Works with Cursor, C
 | I want to... | Use |
 |-------------|-----|
 | Add ZeroEval to my project for the first time | zeroeval-install |
-| Set up tracing and observability | zeroeval-install |
+| Set up tracing and observability (Python or TypeScript) | zeroeval-install |
+| Send traces without the SDK (Go, Ruby, Java, etc.) | custom-tracing |
+| Send traces via REST API or OpenTelemetry (OTLP) | custom-tracing |
 | Migrate hardcoded prompts to ze.prompt | prompt-migration |
 | Wire feedback collection for prompt optimization | prompt-migration |
 | Connect judges to a prompt for automated evaluation | prompt-migration |
@@ -48,6 +52,7 @@ npx skills add zeroeval/zeroeval-skills --list
 
 # Install a specific plugin
 /plugin install zeroeval-install@zeroeval-skills
+/plugin install custom-tracing@zeroeval-skills
 /plugin install create-judge@zeroeval-skills
 /plugin install prompt-migration@zeroeval-skills
 
@@ -59,6 +64,7 @@ Claude Code plugin skills are namespaced by plugin name. After installing from t
 
 ```bash
 /zeroeval-install:zeroeval-install
+/custom-tracing:custom-tracing
 /create-judge:create-judge
 /prompt-migration:prompt-migration
 ```
@@ -77,12 +83,14 @@ Or copy individual skills:
 # Cursor
 mkdir -p .cursor/skills
 cp -r zeroeval-skills/skills/zeroeval-install .cursor/skills/zeroeval-install
+cp -r zeroeval-skills/skills/custom-tracing .cursor/skills/custom-tracing
 cp -r zeroeval-skills/skills/create-judge .cursor/skills/create-judge
 cp -r zeroeval-skills/skills/prompt-migration .cursor/skills/prompt-migration
 
 # Claude Code
 mkdir -p .claude/skills
 cp -r zeroeval-skills/skills/zeroeval-install .claude/skills/zeroeval-install
+cp -r zeroeval-skills/skills/custom-tracing .claude/skills/custom-tracing
 cp -r zeroeval-skills/skills/create-judge .claude/skills/create-judge
 cp -r zeroeval-skills/skills/prompt-migration .claude/skills/prompt-migration
 ```
@@ -104,6 +112,10 @@ zeroeval-skills/
 │   │       ├── typescript-integration-playbook.md
 │   │       ├── judges-playbook.md
 │   │       └── troubleshooting.md
+│   ├── custom-tracing/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       └── api-integration-playbook.md
 │   ├── create-judge/
 │   │   ├── SKILL.md
 │   │   └── references/
@@ -117,6 +129,7 @@ zeroeval-skills/
 │           └── typescript-prompt-migration-playbook.md
 └── plugins/                            # Claude Code plugin wrappers (symlinked)
     ├── zeroeval-install/
+    ├── custom-tracing/
     ├── create-judge/
     └── prompt-migration/
 ```
@@ -124,5 +137,5 @@ zeroeval-skills/
 ## Requirements
 
 - A ZeroEval account and API key -- [zeroeval.com](https://zeroeval.com)
-- Python 3.8+ or Node 18+
-- An LLM provider SDK (OpenAI, Vercel AI, LangChain, etc.)
+- **SDK path**: Python 3.8+ or Node 18+, plus an LLM provider SDK (OpenAI, Vercel AI, LangChain, etc.)
+- **Direct API / OTLP path**: any language with an HTTP client or OpenTelemetry exporter

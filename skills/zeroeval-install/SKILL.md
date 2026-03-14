@@ -1,6 +1,6 @@
 ---
 name: zeroeval-install
-description: This skill should be used when users want to install, set up, or integrate the ZeroEval SDK into their AI application, agent, or pipeline. It covers first-run setup, trace ingestion, ze.prompt migration, and judge recommendations for both Python and TypeScript. Triggers on "install zeroeval", "set up zeroeval", "add tracing", "integrate zeroeval", "ze.prompt", "add judges", or "monitor my AI app".
+description: This skill should be used when users want to install, set up, or integrate ZeroEval into their AI application, agent, or pipeline. It covers SDK setup (Python and TypeScript), first-run tracing, ze.prompt migration, and judge recommendations. For non-SDK languages or direct API/OTLP ingestion it routes to the custom-tracing skill. Triggers on "install zeroeval", "set up zeroeval", "add tracing", "integrate zeroeval", "ze.prompt", "add judges", or "monitor my AI app".
 ---
 
 # ZeroEval Install and Integrate
@@ -9,9 +9,9 @@ Guide users from zero to production-ready ZeroEval integration: tracing, prompt 
 
 ## When To Use
 
-- Setting up ZeroEval SDK for the first time (Python or TypeScript).
+- Setting up ZeroEval for the first time in any language.
 - Adding tracing/observability to an existing AI app, agent, or pipeline.
-- Migrating hardcoded prompts to `ze.prompt` with staged rollout.
+- Migrating hardcoded prompts to `ze.prompt` with staged rollout (Python / TypeScript).
 - Choosing and configuring judges for automated evaluation.
 - Troubleshooting missing traces, broken feedback loops, or prompt metadata issues.
 
@@ -19,13 +19,14 @@ Guide users from zero to production-ready ZeroEval integration: tracing, prompt 
 
 Follow these steps in order. Each step references a specific playbook in `references/` for deep details; load only the relevant playbook when needed.
 
-### Step 1: Detect Stack
+### Step 1: Detect Integration Path
 
-Determine the user's language and framework before proceeding.
+Determine which integration path fits the user's setup:
 
-- Check for `pyproject.toml`, `requirements.txt`, `setup.py`, or `.py` files -> **Python path**.
-- Check for `package.json`, `tsconfig.json`, or `.ts`/`.js` files -> **TypeScript path**.
-- If both exist, ask the user which SDK to set up first.
+- Check for `pyproject.toml`, `requirements.txt`, `setup.py`, or `.py` files -> **Python SDK path**. Continue to Step 2.
+- Check for `package.json`, `tsconfig.json`, or `.ts`/`.js` files -> **TypeScript SDK path**. Continue to Step 2.
+- If the user's language has no ZeroEval SDK (Go, Ruby, Java, Rust, etc.), or they explicitly want to use the REST API or OpenTelemetry without an SDK -> **Direct API / OTLP path**. Hand off to the `custom-tracing` skill and stop here.
+- If both Python and TypeScript are present, ask the user which SDK to set up first.
 
 ### Step 2: Install and Initialize
 
