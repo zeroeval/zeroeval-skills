@@ -27,6 +27,16 @@
       "name": "prompt-migration",
       "source": "./plugins/prompt-migration",
       "description": "Migrate hardcoded prompts to ze.prompt with feedback and optimization"
+    },
+    {
+      "name": "manage-data",
+      "source": "./plugins/manage-data",
+      "description": "Create, push, version, and manage benchmark datasets"
+    },
+    {
+      "name": "run-evals",
+      "source": "./plugins/run-evals",
+      "description": "Write tasks, evaluations, and scoring pipelines"
     }
   ]
 }

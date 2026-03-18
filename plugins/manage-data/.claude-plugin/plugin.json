@@ -1,0 +1,5 @@
+{
+  "name": "manage-data",
+  "description": "Create, push, version, and manage benchmark datasets with the ZeroEval SDK",
+  "version": "1.0.0"
+}
