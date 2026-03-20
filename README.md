@@ -12,22 +12,37 @@ Agent skills for integrating ZeroEval into AI applications. Works with Cursor, C
 
 **prompt-migration** -- Migrate hardcoded prompts to `ze.prompt`. Covers the full migration workflow, feedback wiring, judge linkage, staged rollout, and prompt optimization for both Python and TypeScript.
 
+### LLM Stats Benchmark Hub
+
+**manage-data** -- Create, push, version, and manage benchmark datasets for the LLM Stats benchmark hub. Covers the full dataset lifecycle: Python SDK, CSV, git-based workflows, subsets, versioning, and multimodal data.
+
+**run-evals** -- Write tasks, evaluations, and scoring pipelines for LLM Stats benchmarks. Covers `@ze.task`, `dataset.eval()`, row/column/run evaluators, `column_map`, signals, execution config, repeat/resume, and CLI inspection.
+
 ## Which skill do I need?
 
-| I want to... | Use |
-|-------------|-----|
-| Add ZeroEval to my project for the first time | zeroeval-install |
-| Set up tracing and observability (Python or TypeScript) | zeroeval-install |
-| Send traces without the SDK (Go, Ruby, Java, etc.) | custom-tracing |
-| Send traces via REST API or OpenTelemetry (OTLP) | custom-tracing |
-| Migrate hardcoded prompts to ze.prompt | prompt-migration |
-| Wire feedback collection for prompt optimization | prompt-migration |
-| Connect judges to a prompt for automated evaluation | prompt-migration |
+| I want to...                                             | Use              |
+| -------------------------------------------------------- | ---------------- |
+| Add ZeroEval to my project for the first time            | zeroeval-install |
+| Set up tracing and observability (Python or TypeScript)  | zeroeval-install |
+| Send traces without the SDK (Go, Ruby, Java, etc.)       | custom-tracing   |
+| Send traces via REST API or OpenTelemetry (OTLP)         | custom-tracing   |
+| Migrate hardcoded prompts to ze.prompt                   | prompt-migration |
+| Wire feedback collection for prompt optimization         | prompt-migration |
+| Connect judges to a prompt for automated evaluation      | prompt-migration |
 | Understand the staged rollout (explicit / auto / latest) | prompt-migration |
-| Get recommendations for which judges to create | zeroeval-install |
-| Create a new judge with a custom template | create-judge |
-| Design scoring criteria for multi-dimensional evaluation | create-judge |
-| Understand the judge creation API | create-judge |
+| Get recommendations for which judges to create           | zeroeval-install |
+| Create a new judge with a custom template                | create-judge     |
+| Design scoring criteria for multi-dimensional evaluation | create-judge     |
+| Understand the judge creation API                        | create-judge     |
+| Add data to an LLM Stats benchmark                      | manage-data      |
+| Push datasets via git or Python SDK                      | manage-data      |
+| Work with dataset versions and subsets                   | manage-data      |
+| Add multimodal data (images, audio, video)               | manage-data      |
+| Write a `@ze.task` and run evals on a benchmark         | run-evals        |
+| Score eval results with evaluators and `column_map`      | run-evals        |
+| Emit signals during task execution                       | run-evals        |
+| Configure workers, retries, checkpoints, resume          | run-evals        |
+| Inspect eval status, errors, and traces via CLI          | run-evals        |
 
 ## Install
 
@@ -55,6 +70,8 @@ npx skills add zeroeval/zeroeval-skills --list
 /plugin install custom-tracing@zeroeval-skills
 /plugin install create-judge@zeroeval-skills
 /plugin install prompt-migration@zeroeval-skills
+/plugin install manage-data@zeroeval-skills
+/plugin install run-evals@zeroeval-skills
 
 # Reload plugins if the new commands do not appear immediately
 /reload-plugins
@@ -67,6 +84,8 @@ Claude Code plugin skills are namespaced by plugin name. After installing from t
 /custom-tracing:custom-tracing
 /create-judge:create-judge
 /prompt-migration:prompt-migration
+/manage-data:manage-data
+/run-evals:run-evals
 ```
 
 ### Option 3: Clone and copy
@@ -86,6 +105,8 @@ cp -r zeroeval-skills/skills/zeroeval-install .cursor/skills/zeroeval-install
 cp -r zeroeval-skills/skills/custom-tracing .cursor/skills/custom-tracing
 cp -r zeroeval-skills/skills/create-judge .cursor/skills/create-judge
 cp -r zeroeval-skills/skills/prompt-migration .cursor/skills/prompt-migration
+cp -r zeroeval-skills/skills/manage-data .cursor/skills/manage-data
+cp -r zeroeval-skills/skills/run-evals .cursor/skills/run-evals
 
 # Claude Code
 mkdir -p .claude/skills
@@ -93,6 +114,8 @@ cp -r zeroeval-skills/skills/zeroeval-install .claude/skills/zeroeval-install
 cp -r zeroeval-skills/skills/custom-tracing .claude/skills/custom-tracing
 cp -r zeroeval-skills/skills/create-judge .claude/skills/create-judge
 cp -r zeroeval-skills/skills/prompt-migration .claude/skills/prompt-migration
+cp -r zeroeval-skills/skills/manage-data .claude/skills/manage-data
+cp -r zeroeval-skills/skills/run-evals .claude/skills/run-evals
 ```
 
 Note: on Windows without symlink support, use `npx skills` or the manual copy method. The `plugins/` directory contains symlinks that may not resolve on Windows.
@@ -122,16 +145,29 @@ zeroeval-skills/
 │   │       ├── judge-creation-guide.md
 │   │       ├── evaluation-patterns.md
 │   │       └── defaults-and-api-reference.md
-│   └── prompt-migration/
+│   ├── prompt-migration/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── python-prompt-migration-playbook.md
+│   │       └── typescript-prompt-migration-playbook.md
+│   ├── manage-data/                    # LLM Stats benchmark hub
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── dataset-lifecycle.md
+│   │       └── git-workflow.md
+│   └── run-evals/                      # LLM Stats benchmark hub
 │       ├── SKILL.md
 │       └── references/
-│           ├── python-prompt-migration-playbook.md
-│           └── typescript-prompt-migration-playbook.md
+│           ├── task-and-eval-patterns.md
+│           ├── execution-config.md
+│           └── end-to-end-examples.md
 └── plugins/                            # Claude Code plugin wrappers (symlinked)
     ├── zeroeval-install/
     ├── custom-tracing/
     ├── create-judge/
-    └── prompt-migration/
+    ├── prompt-migration/
+    ├── manage-data/
+    └── run-evals/
 ```
 
 ## Requirements

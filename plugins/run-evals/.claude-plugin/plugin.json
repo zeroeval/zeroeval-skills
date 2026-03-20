@@ -1,0 +1,5 @@
+{
+  "name": "run-evals",
+  "description": "Write tasks, evaluations, and scoring pipelines with the ZeroEval SDK",
+  "version": "1.0.0"
+}
