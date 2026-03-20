@@ -41,7 +41,7 @@ Minimum outcome: `ze.init()` runs without errors and the API key is configured.
 
 Make one LLM call through a supported integration and confirm a trace appears.
 
-- **Python**: Follow the "Verify First Trace" section of the Python playbook.
+- **Python**: Follow the "Verify First Trace" section of the Python playbook. If the user's agent produces multiple judged outputs per run, introduce `ze.artifact_span` (see "Artifact Spans" in the playbook).
 - **TypeScript**: Follow the "Verify First Trace" section of the TypeScript playbook.
 
 Minimum outcome: at least one span is ingested (confirm via dashboard or debug logs).

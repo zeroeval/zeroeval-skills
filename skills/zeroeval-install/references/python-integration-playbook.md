@@ -140,6 +140,39 @@ with ze.span("user_question_answering", tags={"feature": "qa_system"}):
         answer = response.choices[0].message.content
 ```
 
+### Artifact Spans
+
+When a prompt-linked run produces multiple judged outputs, use `ze.artifact_span` instead of manually setting `completion_artifact_*` attributes:
+
+```python
+with ze.artifact_span(
+    name="final-decision",
+    artifact_type="final_decision",
+    role="primary",
+    label="Final Decision",
+    tags={"judge_target": "support_ops_final_decision"},
+) as s:
+    s.set_io(input_data=ticket_text, output_data=decision_json)
+
+with ze.artifact_span(
+    name="customer-card",
+    artifact_type="customer_card",
+    role="secondary",
+    label="Customer Card",
+) as card:
+    card.set_io(input_data=summary, output_data=decision_json)
+    card.add_image(base64_data=card_image)
+```
+
+**When to use artifact spans:**
+- One prompt run produces multiple outputs evaluated by different judges.
+- You want the prompt completions page to show a specific output as the row preview (`role="primary"`) while keeping others accessible.
+- You attach images or structured data to secondary artifacts for multimodal judge evaluation.
+
+`artifact_span` defaults to `kind="llm"` and inherits prompt metadata automatically. It is Python SDK only for now.
+
+**Common mistake:** Setting artifact attributes manually but forgetting `kind="llm"`. Use `ze.artifact_span` to avoid this -- it sets the correct kind by default.
+
 ### Supported Auto-Integrations
 
 | Integration | Install Extra | Traced Operations |
