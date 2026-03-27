@@ -60,6 +60,7 @@ Ask the user which scenario fits:
 - **Pull an existing benchmark** — data already exists on LLM Stats. Go to Step 3a.
 - **Create from Python** — data lives in code as dicts or a CSV file. Go to Step 3b.
 - **Git-based workflow** — user wants to clone, add Parquet files, and push via git. Go to Step 3c.
+- **Large upload workflow** — user has large parquet files and wants a resilient upload/session flow. Go to Step 3d.
 
 ### Step 3a: Pull an Existing Dataset
 
@@ -122,7 +123,7 @@ Full reference: https://docs.llm-stats.com/python-sdk/datasets/creating
 
 ### Step 3c: Git-Based Workflow
 
-This is the recommended approach for production benchmarks. Read `references/git-workflow.md` for the complete guide.
+This is a good approach for smaller benchmark repos and metadata-heavy workflows. Read `references/git-workflow.md` for the complete guide.
 
 Quick summary:
 
@@ -138,6 +139,17 @@ git add . && git commit -m "Add benchmark data" && git push
 ```
 
 Full reference: https://docs.llm-stats.com/python-sdk/datasets/uploading-data
+
+### Step 3d: Large Upload Workflow
+
+Use this when the dataset is large enough that a single Git push is fragile or slow.
+
+Quick summary:
+
+1. Create an upload session for the target benchmark.
+2. Upload Parquet files directly to storage using multipart upload URLs.
+3. Finalize the session.
+4. Wait for indexing to move through `received`, `uploading`, `indexing`, and `ready`.
 
 ### Step 4: Work with Versions and Subsets
 
@@ -192,7 +204,7 @@ Full CLI reference: https://docs.llm-stats.com/python-sdk/cli/using-the-cli
 
 ## Key Principles
 
-- **Git for production, SDK for prototyping.** Git handles large files, versioning, scorer scripts, and README alongside data. SDK is faster for small programmatic datasets.
+- **Use the simplest transport that is reliable.** Large parquet payloads should use the upload/session flow. Git is still useful for smaller repos, scorer scripts, and benchmark metadata.
 - **Always include `row_id`.** Stable row identity enables resume, comparison, and version diffing.
 - **Parquet only for subsets.** Only `.parquet` files in `data/` are auto-detected as subsets. CSV and JSONL are stored but not indexed.
 - **Version everything.** Each push creates a new version. Pin versions in eval scripts for reproducibility.

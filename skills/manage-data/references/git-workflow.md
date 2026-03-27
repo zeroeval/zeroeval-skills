@@ -1,16 +1,17 @@
 # Git-Based Data Workflow
 
-Complete guide for managing benchmark data via git. This is the recommended approach for production benchmarks.
+Complete guide for managing benchmark data via git. Use this path for smaller benchmark repos and metadata-heavy workflows.
 
 Official docs: https://docs.llm-stats.com/python-sdk/datasets/uploading-data#git-recommended
 
-## Why Git?
+## When To Use Git
 
-- Handles large datasets efficiently
 - Full version history with meaningful commits
 - Include non-data files (scorers, README, configs) alongside data
 - Standard tooling — works with any git client
 - Each push creates a new dataset version automatically
+
+For large parquet uploads, prefer the upload session flow instead of a single large Git push.
 
 ## Clone the Repository
 
@@ -106,7 +107,9 @@ git commit -m "Add benchmark data"
 git push
 ```
 
-Each push triggers the platform to:
+`git push` updates the benchmark repo immediately, then the platform indexes the dataset asynchronously. Check the benchmark page or run `zeroeval datasets ingest <slug>` if you need to confirm whether the latest push is still `received`, currently `indexing`, `ready`, or `failed`.
+
+Each successful ingest triggers the platform to:
 - Index all files
 - Detect subsets from `data/*.parquet`
 - Detect scorers from `scorers/*.py`
