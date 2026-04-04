@@ -89,7 +89,7 @@ run = dataset.eval(solve, checkpoint=config)
 
 ## ResumeConfig
 
-Controls how interrupted runs are resumed.
+Controls how interrupted or partially-failed runs are resumed.
 
 ```python
 from zeroeval import ResumeConfig
@@ -98,6 +98,7 @@ config = ResumeConfig(
     mode="auto",              # "auto", "force", or "fresh"
     eval_id="eval-abc-123",   # optional: specific eval to resume
     skip_completed=True,      # skip rows that already have results
+    retry_errors=False,       # re-run rows that errored
 )
 
 run = dataset.eval(solve, resume=config)
@@ -108,6 +109,7 @@ run = dataset.eval(solve, resume=config)
 | `mode` | str | "auto" | `auto`: resume if eval exists. `force`: always resume. `fresh`: always start new. |
 | `eval_id` | str | None | Specific eval identifier to resume |
 | `skip_completed` | bool | True | Skip rows with existing results |
+| `retry_errors` | bool | False | Re-run rows that previously errored (successful rows are still skipped) |
 
 Resume requires:
 - Stable `row_id` in every dataset row
@@ -184,6 +186,24 @@ run = dataset.eval(solve,
 
 If interrupted, re-run the same script — it picks up where it left off.
 
+### Retry only errored rows
+
+```python
+# After a run completes with errors (e.g. rate limits, timeouts):
+run.resume(retry_errors=True)
+```
+
+This re-executes only the rows that errored while skipping successful ones.
+The new results overwrite the old errors in the same eval.
+
+Equivalent explicit form:
+
+```python
+run = dataset.eval(solve,
+    resume=ResumeConfig(mode="force", retry_errors=True, eval_id="<eval-id>"),
+)
+```
+
 ## Debugging with the CLI
 
 Use the CLI to diagnose execution issues after a run completes or fails:
@@ -207,5 +227,6 @@ Common diagnostics:
 - **Timeouts**: increase `ExecutionConfig.timeout_s` for slow model calls.
 - **Rate limits**: increase `RetryPolicy.max_attempts` and `max_delay_s`.
 - **Partial runs**: use `ResumeConfig(mode="auto", skip_completed=True)` to continue from where it stopped.
+- **Retry errored rows**: use `run.resume(retry_errors=True)` or `ResumeConfig(retry_errors=True)` to re-run only the failed rows from a completed eval.
 
 Full CLI reference: https://docs.llm-stats.com/python-sdk/cli/using-the-cli

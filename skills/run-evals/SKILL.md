@@ -171,7 +171,7 @@ run = dataset.eval(
 
 Full reference: https://docs.llm-stats.com/python-sdk/evals/repetitions-and-resume
 
-### Step 7: Repeat and Resume (Optional)
+### Step 7: Repeat, Resume, and Retry Errors (Optional)
 
 ```python
 # Run the eval 5 times total
@@ -179,6 +179,9 @@ run.repeat(5)
 
 # Resume an interrupted run (skips already-completed rows)
 run.resume()
+
+# Retry only errored rows (e.g. after rate limits or timeouts)
+run.resume(retry_errors=True)
 ```
 
 Resume requires stable `row_id` in the dataset. Read `references/execution-config.md` for `ResumeConfig` options.

@@ -227,4 +227,8 @@ run = dataset.eval(
 
 # If interrupted, re-run the exact same script.
 # It automatically skips completed rows and continues.
+
+# If the run completed but some rows errored (e.g. rate limits),
+# retry only the failed rows:
+run.resume(retry_errors=True)
 ```
